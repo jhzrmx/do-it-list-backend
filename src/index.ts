@@ -9,6 +9,8 @@ import http from "http";
 import morgan from "morgan";
 import { globalErrorHandler } from "./middlewares/global-error-handler.middleware";
 import { globalRateLimiter } from "./middlewares/limiter.middleware";
+import router from "./routes";
+
 dotenv.config();
 const bootstrap = async () => {
   const app = express();
@@ -45,12 +47,15 @@ const bootstrap = async () => {
 
   // Cookie parser
   app.use(cookieParser());
-  // Root
+
+  // API Testing
   app.get("/api/test", (req, res) => {
     res.status(200).json({ message: "API is running" });
   });
-  // Routes
-  // app.use("api", route);
+
+  // API Routes
+  app.use("/api", router);
+
   // Error handler
   app.use(globalErrorHandler);
   const server = http.createServer(app);
@@ -60,6 +65,7 @@ const bootstrap = async () => {
     console.log(`Server Running on port ${PORT}`);
   });
 };
+
 bootstrap().catch((e) => {
   console.error("Fatal boot error:", e);
   process.exit(1);
