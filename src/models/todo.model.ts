@@ -19,6 +19,8 @@ const TodoSchema = new Schema<ITodo>(
   { timestamps: true },
 );
 
+TodoSchema.index({ user: 1, createdAt: -1 });
+
 const Todo = model<ITodo>("Todo", TodoSchema);
 
 export default Todo;

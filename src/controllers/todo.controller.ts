@@ -3,19 +3,42 @@ import Todo from "../models/todo.model";
 
 export const getTodos = async (req: Request, res: Response) => {
   try {
-    const { search = "", priority = "" } = req.query as Record<string, string>;
+    const {
+      search = "",
+      priority = "",
+      limit = "10",
+    } = req.query as Record<string, string>;
+
+    const pageSize = Math.min(parseInt(limit), 50); // max limit safety
+    const rawCursor =
+      typeof req.query.cursor === "string" ? req.query.cursor : undefined;
+
     const filter: any = { user: req.user!.id };
 
-    if (search) {
-      filter.title = { $regex: search, $options: "i" };
+    if (search) filter.title = { $regex: search, $options: "i" };
+    if (priority) filter.priority = priority;
+
+    if (req.query.cursor) {
+      filter._id = { $lt: req.query.cursor };
     }
 
-    if (priority) {
-      filter.priority = priority;
+    const todosWithExtra = await Todo.find(filter)
+      .sort({ _id: -1 }) // descending
+      .limit(pageSize + 1);
+
+    const hasMore = todosWithExtra.length > pageSize;
+    let nextCursor: string | null = null;
+
+    if (hasMore) {
+      const extraItem = todosWithExtra.pop();
+      nextCursor = extraItem!._id.toString(); // simple, safe cursor
     }
 
-    const todos = await Todo.find(filter);
-    res.json({ todos });
+    res.json({
+      todos: todosWithExtra,
+      nextCursor,
+      hasMore,
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Failed to fetch todos", error });

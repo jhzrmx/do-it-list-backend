@@ -27,7 +27,7 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user._id;
 
-    const { fullName, email, password } = req.body;
+    const { fullName, email, oldPassword, newPassword } = req.body;
 
     const user = await User.findById(userId);
 
@@ -45,8 +45,22 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
       user.email = email;
     }
 
-    if (password) {
-      user.password = password; // will auto-hash via pre("save")
+    if (oldPassword || newPassword) {
+      if (!oldPassword || !newPassword) {
+        return res.status(400).json({
+          message: "Both oldPassword and newPassword are required",
+        });
+      }
+      const isMatch = await user.comparePassword(oldPassword);
+      if (!isMatch) {
+        return res.status(400).json({ message: "Wrong old password" });
+      }
+      if (oldPassword === newPassword) {
+        return res.status(400).json({
+          message: "New password must be different from old password",
+        });
+      }
+      user.password = newPassword; // pre-save hook hashes it
     }
 
     await user.save();
