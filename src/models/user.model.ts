@@ -5,6 +5,7 @@ export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
+  imageUrl: string;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -13,6 +14,7 @@ const UserSchema = new Schema<IUser>(
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
     password: { type: String, required: true },
+    imageUrl: { type: String, default: null },
   },
   { timestamps: true },
 );
@@ -24,7 +26,9 @@ UserSchema.pre<IUser>("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-UserSchema.methods.comparePassword = async function ( candidatePassword: string ) {
+UserSchema.methods.comparePassword = async function (
+  candidatePassword: string,
+) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 

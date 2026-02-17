@@ -1,8 +1,4 @@
-import {
-    deleteMe,
-    myInfo,
-    updateMe,
-} from "@/controllers/me.controller";
+import { deleteMe, myInfo, updateMe } from "@/controllers/me.controller";
 import { protect } from "@/middlewares/auth.middleware";
 import { Router } from "express";
 
