@@ -1,4 +1,3 @@
-import { protect } from "@/middlewares/auth.middleware";
 import { Router } from "express";
 import { login, logout, signup } from "../controllers/auth.controller";
 

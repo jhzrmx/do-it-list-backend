@@ -22,7 +22,8 @@
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
     "mongoose": "^9.2.0",
-    "morgan": "^1.10.1"
+    "morgan": "^1.10.1",
+    "nodemailer": "^8.0.1"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -32,6 +33,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/morgan": "^1.9.10",
     "@types/node": "^25.2.3",
+    "@types/nodemailer": "^7.0.10",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   }
