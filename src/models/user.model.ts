@@ -5,7 +5,7 @@ export interface IUser extends Document {
   fullName: string;
   email: string;
   password: string;
-  imageUrl: string;
+  imageUrl: string | null;
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 

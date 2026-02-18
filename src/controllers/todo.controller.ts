@@ -10,8 +10,6 @@ export const getTodos = async (req: Request, res: Response) => {
     } = req.query as Record<string, string>;
 
     const pageSize = Math.min(parseInt(limit), 50); // max limit safety
-    const rawCursor =
-      typeof req.query.cursor === "string" ? req.query.cursor : undefined;
 
     const filter: any = { user: req.user!.id };
 
@@ -52,8 +50,7 @@ export const createTodo = async (req: Request, res: Response) => {
     completed: false,
     user: req.user!.id,
   });
-
-  res.status(201).json(todo);
+  res.status(201).json({ todo });
 };
 
 export const updateTodo = async (req: Request, res: Response) => {

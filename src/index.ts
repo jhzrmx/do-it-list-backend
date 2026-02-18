@@ -1,5 +1,4 @@
 import initDB from "@/db/db.connect.js";
-import expressMongoSanitize from "@exortek/express-mongo-sanitize";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -10,6 +9,7 @@ import morgan from "morgan";
 import { globalErrorHandler } from "./middlewares/global-error-handler.middleware";
 import { globalRateLimiter } from "./middlewares/limiter.middleware";
 import router from "./routes";
+import mongoSanitize from "./utils/mongo-sanitizer";
 
 dotenv.config();
 const bootstrap = async () => {
@@ -43,7 +43,7 @@ const bootstrap = async () => {
   // JSON parser
   app.use(express.json());
   // Prevent NoSQL Injection
-  app.use(expressMongoSanitize());
+  app.use(mongoSanitize);
 
   // Cookie parser
   app.use(cookieParser());

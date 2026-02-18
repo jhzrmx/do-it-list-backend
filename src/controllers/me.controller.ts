@@ -27,7 +27,8 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.user._id;
 
-    const { fullName, email, oldPassword, newPassword, imageUrl } = req.body;
+    const { fullName, email, oldPassword, newPassword, imageUrl, deleteImage } =
+      req.body;
 
     const user = await User.findById(userId);
 
@@ -65,6 +66,10 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
 
     if (imageUrl) {
       user.imageUrl = imageUrl;
+    }
+
+    if (deleteImage) {
+      user.imageUrl = null;
     }
 
     await user.save();
