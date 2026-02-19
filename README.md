@@ -84,7 +84,7 @@ src/
 │
 └── utils/
     ├── generate-token.ts
-    ├── mongo-sanitizer.ts\
+    ├── mongo-sanitizer.ts
     ├── validate-password.ts
     └── error/
         └── app-error.util.ts
@@ -96,6 +96,8 @@ src/
 
 ```
 git clone https://github.com/jhzrmx/do-it-list-backend
+```
+```
 cd do-it-list-backend
 ```
 
@@ -139,31 +141,31 @@ Request → auth.middleware → Controller → Response
 **🔑 Auth Routes**
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | /api/auth/signup | Create new user |
-| POST | /api/auth/login | Login user |
-| POST | /api/auth/logout | Logout user |
+| POST | `/api/auth/signup` | Create new user |
+| POST | `/api/auth/login` | Login user |
+| POST | `/api/auth/logout` | Logout user |
 
 **👤 User Route (Protected)**
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | /api/me | Get current user profile |
-| PUT | /api/me | Update current user profile |
-| DELETE | /api/me | Delete current user profile |
+| GET | `/api/me` | Get current user profile |
+| PUT | `/api/me` | Update current user profile |
+| DELETE | `/api/me` | Delete current user profile |
 
 **📝 Todo Routes (Protected)**
 | Method | Endpoint | Description |
 |---|---|---|
-| GET | /api/todos | Get user todos (with limit/cursor) |
-| POST | /api/todos | Create new todo |
-| PUT | /api/todos/:id | Update todo |
-| DELETE | /api/todos/:id | Delete todo |
+| GET | `/api/todos` | Get user todos (with limit/cursor) |
+| POST | `/api/todos` | Create new todo |
+| PUT | `/api/todos/:id` | Update todo |
+| DELETE | `/api/todos/:id` | Delete todo |
 
 **🔄 Password Reset**
 | Method | Endpoint | Description |
 |---|---|---|
-| POST | /api/forget-password/send-link | Request reset email |
-| POST | /api/forget-password/verify-link | Verifies if link sent was valid |
-| POST | /api/forget-password/change-password | User changes their password, given the token |
+| POST | `/api/forget-password/send-link` | Request reset email |
+| POST | `/api/forget-password/verify-link` | Verifies if link sent was valid |
+| POST | `/api/forget-password/change-password` | User changes their password, given the token |
 
 ## 🛡 Security Features
 
