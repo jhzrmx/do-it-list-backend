@@ -38,6 +38,8 @@ Key Principles:
 - Type-safe development with TypeScript
 - Clean and maintainable structure
 
+For frontend client, please visit [here](https://github.com/jhzrmx/do-it-list-frontend).
+
 ## 📂 Folder Structure
 
 ```
@@ -104,7 +106,7 @@ npm install
 
 3. Configure Environment Variables
 
-Create a `.env` file based on `.env.example`.
+- Create a `.env` file based on `.env.example`.
 
 4. Run Development Server
 
