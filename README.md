@@ -103,7 +103,8 @@ npm install
 ```
 
 3. Configure Environment Variables
-   Create a `.env` file based on `.env.example`.
+
+Create a `.env` file based on `.env.example`.
 
 4. Run Development Server
 
