@@ -97,21 +97,24 @@ src/
 ```
 git clone https://github.com/jhzrmx/do-it-list-backend
 ```
+
+2. Navigate into project
+
 ```
 cd do-it-list-backend
 ```
 
-2. Install Dependencies
+3. Install Dependencies
 
 ```
 npm install
 ```
 
-3. Configure Environment Variables
+4. Configure Environment Variables
 
 - Create a `.env` file based on `.env.example`.
 
-4. Run Development Server
+5. Run Development Server
 
 ```
 npm run dev
