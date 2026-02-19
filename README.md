@@ -84,7 +84,8 @@ src/
 │
 └── utils/
     ├── generate-token.ts
-    ├── mongo-sanitizer.ts
+    ├── mongo-sanitizer.ts\
+    ├── validate-password.ts
     └── error/
         └── app-error.util.ts
 ```

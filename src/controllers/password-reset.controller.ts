@@ -4,6 +4,7 @@ import { Request, Response } from "express";
 import PasswordReset from "../models/password-reset.model";
 import User from "../models/user.model";
 import emailService from "../services/email.service";
+import { validatePassword } from "../utils/validate-password";
 
 export const sendLink = async (req: Request, res: Response) => {
   try {
@@ -77,6 +78,11 @@ export const verifyLink = async (req: Request, res: Response) => {
 export const changePassword = async (req: Request, res: Response) => {
   try {
     const { token, newPassword } = req.body;
+
+    const passwordError = validatePassword(newPassword);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError });
+    }
 
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 

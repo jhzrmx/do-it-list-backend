@@ -38,7 +38,6 @@ export const getTodos = async (req: Request, res: Response) => {
       hasMore,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({ message: "Failed to fetch todos", error });
   }
 };

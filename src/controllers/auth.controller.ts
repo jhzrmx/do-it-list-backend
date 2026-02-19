@@ -1,13 +1,18 @@
 import { generateToken } from "@/utils/generate-token";
 import { Request, Response } from "express";
 import User from "../models/user.model";
+import { validatePassword } from "../utils/validate-password";
 
 export const signup = async (req: Request, res: Response) => {
   try {
     const { fullName, email, password } = req.body;
 
-    const existingUser = await User.findOne({ email });
+    const passwordError = validatePassword(password);
+    if (passwordError) {
+      return res.status(400).json({ message: passwordError });
+    }
 
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User already exists" });
     }
@@ -24,12 +29,12 @@ export const signup = async (req: Request, res: Response) => {
       message: "User created",
       user: {
         id: user._id,
-        fullName: fullName,
-        email: email,
+        fullName,
+        email,
       },
       token,
     });
-  } catch (error) {
+  } catch {
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -50,8 +55,7 @@ export const login = async (req: Request, res: Response) => {
       user: { id: user._id, email: user.email, name: user.fullName },
       token,
     });
-  } catch (error) {
-    console.error(error);
+  } catch {
     res.status(500).json({ message: "Server error" });
   }
 };
