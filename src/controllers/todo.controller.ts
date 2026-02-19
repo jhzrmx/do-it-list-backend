@@ -62,7 +62,7 @@ export const updateTodo = async (req: Request, res: Response) => {
 
   if (!todo) return res.status(404).json({ message: "Todo not found" });
 
-  res.json(todo);
+  res.json({ todo });
 };
 
 export const deleteTodo = async (req: Request, res: Response) => {
