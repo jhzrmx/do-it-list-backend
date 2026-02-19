@@ -96,7 +96,7 @@ git clone https://github.com/jhzrmx/do-it-list-backend
 cd do-it-list-backend
 ```
 
-2️. Install Dependencies
+2. Install Dependencies
 
 ```
 npm install
