@@ -6,7 +6,7 @@ export interface IUser extends Document {
   email: string;
   password?: string; // Optional for OAuth users
   imageUrl: string | null;
-  provider: "local" | "google"; // Add provider field
+  providers: ("local" | "google")[];
   googleId?: string; // For Google OAuth
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
@@ -18,12 +18,20 @@ const UserSchema = new Schema<IUser>(
     password: {
       type: String,
       required: function () {
-        return this.provider === "local";
+        return this.providers.includes("local");
       },
     }, // Required only for local users
     imageUrl: { type: String, default: null },
-    provider: { type: String, enum: ["local", "google"], default: "local" },
-    googleId: { type: String, sparse: true }, // Sparse index for optional field
+    providers: {
+      type: [String],
+      enum: ["local", "google"],
+      default: ["local"],
+    },
+    googleId: {
+      type: String,
+      unique: true,
+      sparse: true,
+    }, // Sparse index for optional field
   },
   { timestamps: true },
 );
@@ -35,10 +43,14 @@ UserSchema.pre<IUser>("save", async function () {
   this.password = await bcrypt.hash(this.password, salt);
 });
 
+UserSchema.methods.hasPassword = function () {
+  return this.providers.includes("local");
+};
+
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ) {
-  if (!this.password) return false; // OAuth users don't have passwords
+  if (!this.hasPassword()) return false; // OAuth users don't have passwords
   return bcrypt.compare(candidatePassword, this.password);
 };
 

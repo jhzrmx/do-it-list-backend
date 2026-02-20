@@ -33,6 +33,8 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
 
     const user = await User.findById(userId);
 
+    const hasLocalProvider = user?.providers.includes("local");
+
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
@@ -48,6 +50,12 @@ export const updateMe = async (req: AuthRequest, res: Response) => {
     }
 
     if (oldPassword || newPassword) {
+      if (!hasLocalProvider) {
+        return res.status(400).json({
+          message: "Password not set. This account uses social login.",
+        });
+      }
+
       if (!oldPassword || !newPassword) {
         return res.status(400).json({
           message: "Both oldPassword and newPassword are required",

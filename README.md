@@ -126,7 +126,7 @@ Type-check only:
 npm run typecheck
 ```
 
-## � Google OAuth Setup
+## 🔑 Google OAuth Setup
 
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project or select existing one
@@ -146,7 +146,7 @@ GOOGLE_CLIENT_SECRET=your_google_client_secret
 GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
 ```
 
-## �🔐 Authentication Flow
+## 🔐 Authentication Flow
 
 - User registers
 - Password is hashed using bcryptjs
@@ -228,7 +228,7 @@ STATUS CODE: 400
 
 ## 📧 Email Service
 
-The email.service.ts handles:
+The `email.service.ts` handles:
 
 - Password reset emails
 - SMTP configuration
