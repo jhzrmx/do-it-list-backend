@@ -1,6 +1,7 @@
 import { generateToken } from "@/utils/generate-token";
 import { Request, Response } from "express";
 import User from "../models/user.model";
+import passport from "../utils/passport";
 import { validatePassword } from "../utils/validate-password";
 
 export const signup = async (req: Request, res: Response) => {
@@ -67,4 +68,24 @@ export const logout = (_req: Request, res: Response) => {
     sameSite: "strict",
   });
   res.json({ message: "Logged out successfully" });
+};
+
+// Google OAuth
+export const googleAuth = passport.authenticate("google", {
+  scope: ["profile", "email"],
+});
+
+export const googleAuthCallback = (req: Request, res: Response) => {
+  passport.authenticate("google", { session: false }, (err: any, user: any) => {
+    if (err || !user) {
+      return res.redirect(
+        `${process.env.FRONTEND_URL}/login?error=oauth_failed`,
+      );
+    }
+
+    const token = generateToken(user._id.toString(), res);
+
+    // Redirect to frontend with token
+    res.redirect(`${process.env.FRONTEND_URL}/?token=${token}`);
+  })(req, res);
 };

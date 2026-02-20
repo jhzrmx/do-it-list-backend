@@ -126,7 +126,27 @@ Type-check only:
 npm run typecheck
 ```
 
-## 🔐 Authentication Flow
+## � Google OAuth Setup
+
+1. Go to [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select existing one
+3. Enable Google+ API
+4. Go to "Credentials" → "Create Credentials" → "OAuth 2.0 Client IDs"
+5. Set application type to "Web application"
+6. Add authorized redirect URIs:
+   - For development: `http://localhost:5000/api/auth/google/callback`
+   - For production: `https://yourdomain.com/api/auth/google/callback`
+7. Copy Client ID and Client Secret to your `.env` file
+
+**Required Environment Variables:**
+
+```
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/api/auth/google/callback
+```
+
+## �🔐 Authentication Flow
 
 - User registers
 - Password is hashed using bcryptjs
@@ -147,6 +167,8 @@ Request → auth.middleware → Controller → Response
 | POST | `/api/auth/signup` | Create new user |
 | POST | `/api/auth/login` | Login user |
 | POST | `/api/auth/logout` | Logout user |
+| GET | `/api/auth/google` | Initiate Google OAuth login |
+| GET | `/api/auth/google/callback` | Google OAuth callback |
 
 **👤 User Route (Protected)**
 | Method | Endpoint | Description |

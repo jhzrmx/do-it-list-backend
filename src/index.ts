@@ -10,6 +10,7 @@ import { globalErrorHandler } from "./middlewares/global-error-handler.middlewar
 import { globalRateLimiter } from "./middlewares/limiter.middleware";
 import router from "./routes";
 import mongoSanitize from "./utils/mongo-sanitizer";
+import passport from "./utils/passport";
 
 dotenv.config();
 const bootstrap = async () => {
@@ -47,6 +48,9 @@ const bootstrap = async () => {
 
   // Cookie parser
   app.use(cookieParser());
+
+  // Passport
+  app.use(passport.initialize());
 
   // API Testing
   app.get("/api/test", (req, res) => {

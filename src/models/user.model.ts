@@ -4,8 +4,10 @@ import { Document, Schema, model } from "mongoose";
 export interface IUser extends Document {
   fullName: string;
   email: string;
-  password: string;
+  password?: string; // Optional for OAuth users
   imageUrl: string | null;
+  provider: "local" | "google"; // Add provider field
+  googleId?: string; // For Google OAuth
   comparePassword(candidatePassword: string): Promise<boolean>;
 }
 
@@ -13,14 +15,21 @@ const UserSchema = new Schema<IUser>(
   {
     fullName: { type: String, required: true },
     email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
+    password: {
+      type: String,
+      required: function () {
+        return this.provider === "local";
+      },
+    }, // Required only for local users
     imageUrl: { type: String, default: null },
+    provider: { type: String, enum: ["local", "google"], default: "local" },
+    googleId: { type: String, sparse: true }, // Sparse index for optional field
   },
   { timestamps: true },
 );
 
 UserSchema.pre<IUser>("save", async function () {
-  if (!this.isModified("password")) return;
+  if (!this.isModified("password") || !this.password) return;
 
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
@@ -29,6 +38,7 @@ UserSchema.pre<IUser>("save", async function () {
 UserSchema.methods.comparePassword = async function (
   candidatePassword: string,
 ) {
+  if (!this.password) return false; // OAuth users don't have passwords
   return bcrypt.compare(candidatePassword, this.password);
 };
 
